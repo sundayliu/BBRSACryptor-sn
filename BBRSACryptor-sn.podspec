@@ -90,12 +90,22 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "BBRSACryptor/*.{h,m}", "GTMBase64/*.{h,m}", "OpenSSL/include/openssl/*.h"
+  s.source_files  = "BBRSACryptor", "BBRSACryptor/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
+  s.subspec 'GTMBase64' do |ss|
+    ss.source_files = "GTMBase64/*.{h,m}"
+  end
 
+  s.subspec 'OpenSSL' do |ss|
+    ss.subspec 'include' do |sss|
+        sss.source_files = "OpenSSL/include/**/*.h"
+        sss.header_mappings_dir = "OpenSSL/include"
+    end
 
+    ss.vendored_libraries = "OpenSSL/lib/libcrypto.a", "OpenSSL/lib/libssl.a"
+  end
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
   #  A list of resources included with the Pod. These are copied into the
